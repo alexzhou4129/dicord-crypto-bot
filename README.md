@@ -4,7 +4,7 @@
 This is a simple cryptocurrency discord bot made using python
 
 ## General Info
-A Discord bot that uses the coingecko api to track top real time information on top 100 cryptocurrecncy based on marketcap. By sending a command in a text channel, the bot would reply with a embed message of the cryptocurrency the user asked for. 
+A Discord bot that uses the [coingecko api](https://www.coingecko.com/en/api) to track top real time information on top 100 cryptocurrecncy based on marketcap. By sending a command in a text channel, the bot would reply with a embed message of the cryptocurrency the user asked for. 
 
 ## Features
 - fetch coin info and formats into a embed message 
