@@ -13,5 +13,4 @@ A Discord bot that uses the coingecko api to track top real time information on 
 - chart of price action history (yet to be implemented) 
 
 ## Usage 
-- To get info on a certain coin use: 
- ```!<coin name> ```
+- To get info on a certain coin use ```!<coin name> ``` eg: ```!bitcoin```
