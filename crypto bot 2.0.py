@@ -8,43 +8,11 @@ from discord.utils import get
 from discord.ext import commands, tasks
 from discord.ext.commands import has_permissions,  CheckFailure, check
 from binance.spot import Spot 
-import finnhub
+import config 
+import fetchinfo
 
 # client = discord.Client() 
-client = commands.Bot(command_prefix = '-') #put your own prefix here
-
-finnhub_client = finnhub.Client(api_key="c99npv2ad3iaj0qos6kg")
-
-# print(finnhub_client.crypto_candles('BINANCE:BTCUSDT', 'D', 1590988249, 1591852249))
-
-def getCryptoChart (crypto):
-
-    URL = "https://finnhub.io/api/v1/crypto/candle?symbol=BINANCE:BTCUSDT&resolution=D&from=1572651390&to=1575243390&token=c99npv2ad3iaj0qos6kg"
-    r = requests.get(url=URL)
-    data = r.json() 
-    # print ("data", data)
-
-getCryptoChart("bitcoin")
-
-#getting crypto info stuff 
-def getCrypto (crypto):
-    URL = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd"
-    r = requests.get(url=URL)
-    data = r.json()
-    #data is a list of dictionaries 
-
-    for i in range (0, 100):
-        coin = data[i]
-        #coin is a dictionary, indexed with strings 
-        if coin["id"]== crypto:
-            # print (crypto, "price is", coin["current_price"])
-            return coin 
-    return None 
-
-def showCryptoInfo (crypto, channel):
-    coin = getCrypto(crypto)
-    coinInfo = [coin["id"], coin["current_price"], coin["price_change_percentage_24h"], coin["image"]]
-    return coinInfo
+client = commands.Bot(command_prefix = config.prefix()) #put your own prefix here
 
 
 #TODO add commands 
@@ -62,6 +30,14 @@ async def info (context):
     myEmbed.set_author(name="alex zhou")
 
     await context.message.channel.send (embed = myEmbed)
+
+@client.command(name = "coins")
+async def coins(context):
+    list = fetchinfo.listAllCoin() 
+    myEmbed = discord.Embed(title = "All coins supported", description=list[0::], color=0x00ff00)
+    await context.message.channel.send (embed = myEmbed)
+
+
 
 
 
@@ -89,11 +65,11 @@ async def on_message(message):
 
     #get crypto 
     if message.content.startswith("!"):
-        crypto = getCrypto(message.content[1:])
+        crypto = fetchinfo.getCrypto(message.content[1:])
         myEmbed = discord.Embed(title = "**NAME:**", description=crypto["id"], color=0x00ff00)
         myEmbed.set_thumbnail(url=crypto["image"])
         myEmbed.set_image   (url=crypto["image"])
-        myEmbed.add_field(name="Price:", value=crypto["current_price"], inline=False)
+        myEmbed.add_field(name="Price:", value=str(crypto["current_price"])+" USDT", inline=False)
         myEmbed.add_field(name="Movement:", value=str(crypto["price_change_percentage_24h"])+"%", inline=False)
         #works with top 100 coins, find price of a coin by using "!" before it 
         await message.channel.send(embed = myEmbed)
@@ -119,4 +95,4 @@ async def kick(ctx, member : discord.Member):
     except:
         await ctx.send("bot does not have the kick members permission!")
 
-client.run("OTYxNzAwNTQ5NjcyMTc3Njc0.Yk8zbg.gn7_s-DoHNVhqsamVVcJPEIOc64")
+client.run(config.token())
