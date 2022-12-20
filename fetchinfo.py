@@ -1,5 +1,7 @@
 import requests
+# import coingecko_api
 
+#TODO convert all this shit to use coingeckoAPI() 
 
 #getting crypto info stuff 
 def getCrypto (crypto):

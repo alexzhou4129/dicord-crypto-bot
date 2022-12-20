@@ -7,16 +7,17 @@ import discord.ext
 from discord.utils import get
 from discord.ext import commands, tasks
 from discord.ext.commands import has_permissions,  CheckFailure, check
-from binance.spot import Spot 
+# from binance.spot import Spot 
 import config 
 import fetchinfo
 
 # client = discord.Client() 
-client = commands.Bot(command_prefix = config.prefix()) #put your own prefix here
+intents = discord.Intents.all() 
+client = commands.Bot(command_prefix = config.prefix(), intents=intents) #put your own prefix here
 
-
-#TODO add commands 
-#TODO add charts to crypto 
+#TODO add reddit and twitter sentiment (greed/fear)
+#TODO daily news with fear greed index and today's crypto headlines 
+#TODO add trading charts to crypto 
 #TODO add price alerts 
 #TODO add feature to set time for alerts 
 
@@ -46,8 +47,8 @@ async def on_ready():
   print (f"You have logged in as {client}")
 
   #called whether there is a message in the chat
-  genchat = client.get_channel(958809906859892790)
-  await genchat.send("**whomst have awaken the ancient one**")
+  botchat = client.get_channel(962506194457608302)
+  await botchat.send("**whomst have awaken the ancient one**")
 
 @client.event
 async def on_message(message):
@@ -68,7 +69,7 @@ async def on_message(message):
         crypto = fetchinfo.getCrypto(message.content[1:])
         myEmbed = discord.Embed(title = "**NAME:**", description=crypto["id"], color=0x00ff00)
         myEmbed.set_thumbnail(url=crypto["image"])
-        myEmbed.set_image   (url=crypto["image"])
+        myEmbed.set_image   ("figure.png")
         myEmbed.add_field(name="Price:", value=str(crypto["current_price"])+" USDT", inline=False)
         myEmbed.add_field(name="Movement:", value=str(crypto["price_change_percentage_24h"])+"%", inline=False)
         #works with top 100 coins, find price of a coin by using "!" before it 
