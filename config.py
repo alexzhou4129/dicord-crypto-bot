@@ -2,7 +2,7 @@ def prefix():
     return "-"
 
 def token():
-    return "OTYxNzAwNTQ5NjcyMTc3Njc0.GR-s19.blkNcYivRrQdWgCkA6i2kzfNcAN-a85mFijXEs"
+    return "BOT_TOKEN"
 
 def owner():
     return ""

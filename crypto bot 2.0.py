@@ -1,4 +1,4 @@
-from cv2 import MergeExposures
+# from cv2 import MergeExposures
 import discord
 import requests
 import os
@@ -15,6 +15,8 @@ import fetchinfo
 intents = discord.Intents.all() 
 client = commands.Bot(command_prefix = config.prefix(), intents=intents) #put your own prefix here
 
+#TODO generate a requirement.txt of all the pip installs 
+#TODO push it all onto glitch.com (download all the dependencies) (opencv is not working)
 #TODO add reddit and twitter sentiment (greed/fear)
 #TODO daily news with fear greed index and today's crypto headlines 
 #TODO add trading charts to crypto 
@@ -69,7 +71,7 @@ async def on_message(message):
         crypto = fetchinfo.getCrypto(message.content[1:])
         myEmbed = discord.Embed(title = "**NAME:**", description=crypto["id"], color=0x00ff00)
         myEmbed.set_thumbnail(url=crypto["image"])
-        myEmbed.set_image   ("figure.png")
+        myEmbed.set_image("figure.png")
         myEmbed.add_field(name="Price:", value=str(crypto["current_price"])+" USDT", inline=False)
         myEmbed.add_field(name="Movement:", value=str(crypto["price_change_percentage_24h"])+"%", inline=False)
         #works with top 100 coins, find price of a coin by using "!" before it 
