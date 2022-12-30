@@ -3,6 +3,9 @@ import datetime
 import time 
 import seaborn as sns 
 import matplotlib.pyplot as plt 
+import os 
+# import imgur
+
 
 cg = CoinGeckoAPI() 
 
@@ -19,7 +22,7 @@ start_time = unix_time(2020, 1, 1, 0, 0)
 end_time = unix_time(2022, 6, 1, 0, 0)
 
 btc_result = cg.get_coin_market_chart_range_by_id(
-    id="bitcoin",
+    id="ethereum",
     vs_currency="usd",
     from_timestamp=start_time,
     to_timestamp=end_time
@@ -40,6 +43,8 @@ sns.lineplot(
 
 plt.savefig("figure.png")
 plt.show() 
+# print (imgur.get_link('figure.png'))
+# os.remove('figure.png')
 
 
-print(btc['price'])
+# print(btc['price'])

@@ -15,7 +15,6 @@ import fetchinfo
 intents = discord.Intents.all() 
 client = commands.Bot(command_prefix = config.prefix(), intents=intents) #put your own prefix here
 
-#TODO generate a requirement.txt of all the pip installs 
 #TODO push it all onto glitch.com (download all the dependencies) (opencv is not working)
 #TODO add reddit and twitter sentiment (greed/fear)
 #TODO daily news with fear greed index and today's crypto headlines 
