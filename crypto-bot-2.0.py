@@ -97,4 +97,4 @@ async def kick(ctx, member : discord.Member):
     except:
         await ctx.send("bot does not have the kick members permission!")
 
-client.run(config.token())
+client.run(os.getenv("DISCORD_BOT_ID"))

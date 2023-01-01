@@ -27,4 +27,4 @@ def get_link(image):
 
 print (get_link('figure.png'))
 
-os.remove('figure.png')
+# os.remove('figure.png')
