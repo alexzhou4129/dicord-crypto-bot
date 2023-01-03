@@ -1,4 +1,3 @@
-# from cv2 import MergeExposures
 import discord
 import requests
 import os
@@ -7,13 +6,17 @@ import discord.ext
 from discord.utils import get
 from discord.ext import commands, tasks
 from discord.ext.commands import has_permissions,  CheckFailure, check
-# from binance.spot import Spot 
-import config 
 import fetchinfo
+from discord import app_commands
 
-# client = discord.Client() 
-intents = discord.Intents.all() 
-client = commands.Bot(command_prefix = config.prefix(), intents=intents) #put your own prefix here
+class client(discord.Client):
+    async def startup(self):
+        await self.wait_until_ready() 
+        # await tree.sync(guild=discord.Object(id = 958809906323009607))
+
+# client = discord.Client(intents=intents) 
+client = commands.Bot(command_prefix = "-", intents=discord.Intents.all() ) #put your own prefix here
+# tree = app_commands.CommandTree(client)
 
 #TODO push it all onto glitch.com (download all the dependencies) (opencv is not working)
 #TODO add reddit and twitter sentiment (greed/fear)
@@ -22,25 +25,26 @@ client = commands.Bot(command_prefix = config.prefix(), intents=intents) #put yo
 #TODO add price alerts 
 #TODO add feature to set time for alerts 
 
-@client.command(name= "info")
-async def info (context):
-    print ("here")
-    myEmbed = discord.Embed(title = "this is a title", description="this is a description", color=0x00ff00)
-    myEmbed.add_field(name="title: ", value="this is the title", inline=True)
-    myEmbed.add_field(name="date released: ", value="apr 10", inline=False)
-    myEmbed.set_footer(text="this is a footer")
-    myEmbed.set_author(name="alex zhou")
+# @client.command(name= "info")
+# async def info (context):
+#     print ("here")
+#     myEmbed = discord.Embed(title = "this is a title", description="this is a description", color=0x00ff00)
+#     myEmbed.add_field(name="title: ", value="this is the title", inline=True)
+#     myEmbed.add_field(name="date released: ", value="apr 10", inline=False)
+#     myEmbed.set_footer(text="this is a footer")
+#     myEmbed.set_author(name="alex zhou")
 
-    await context.message.channel.send (embed = myEmbed)
+#     await context.message.channel.send (embed = myEmbed)
 
-@client.command(name = "coins")
-async def coins(context):
-    list = fetchinfo.listAllCoin() 
-    myEmbed = discord.Embed(title = "All coins supported", description=list[0::], color=0x00ff00)
-    await context.message.channel.send (embed = myEmbed)
+# @client.command(name = "list") #list all coins 
+# async def coins(context):
+#     list = fetchinfo.listAllCoin() 
+#     myEmbed = discord.Embed(title = "All coins supported", description=list[0::], color=0x00ff00)
+#     await context.message.channel.send (embed = myEmbed)
 
-
-
+@client.tree.command(name = "hello")
+async def hello(interaction: discord.Interaction):
+    await interaction.response.send_message(f"this is a slash command!")
 
 
 @client.event 
@@ -49,7 +53,7 @@ async def on_ready():
 
   #called whether there is a message in the chat
   botchat = client.get_channel(962506194457608302)
-  await botchat.send("**whomst have awaken the ancient one**")
+  await botchat.send("**Coin Sage Online**")
 
 @client.event
 async def on_message(message):
@@ -75,7 +79,7 @@ async def on_message(message):
         myEmbed.add_field(name="Movement:", value=str(crypto["price_change_percentage_24h"])+"%", inline=False)
         #works with top 100 coins, find price of a coin by using "!" before it 
         await message.channel.send(embed = myEmbed)
-        await message.channel.send(crypto)
+        # await message.channel.send(crypto)
 
     await client.process_commands(message)
 
@@ -86,15 +90,15 @@ async def on_message(message):
 
     
 
-@client.command()
-async def ping(ctx):
-    await ctx.send("pong!") #simple command so that when you type "!ping" the bot will respond with "pong!"
+# @client.command()
+# async def ping(ctx):
+#     await ctx.send("pong!") #simple command so that when you type "!ping" the bot will respond with "pong!"
 
-async def kick(ctx, member : discord.Member):
-    try:
-        await member.kick(reason=None)
-        await ctx.send("kicked "+member.mention) #simple kick command to demonstrate how to get and use member mentions
-    except:
-        await ctx.send("bot does not have the kick members permission!")
+# async def kick(ctx, member : discord.Member):
+#     try:
+#         await member.kick(reason=None)
+#         await ctx.send("kicked "+member.mention) #simple kick command to demonstrate how to get and use member mentions
+#     except:
+#         await ctx.send("bot does not have the kick members permission!")
 
 client.run(os.getenv("DISCORD_BOT_ID"))

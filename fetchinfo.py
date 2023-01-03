@@ -16,6 +16,11 @@ def getCrypto (crypto):
         if coin["id"]== crypto:
             # print (crypto, "price is", coin["current_price"])
             return coin 
+    #does it again for the coin ticker, so that this commands work with both "bitcoin" and "btc"
+    for i in range (0,100):
+        coin = data[i]
+        if coin["symbol"] == crypto:
+            return coin
     return None 
 
 def showCryptoInfo (crypto, channel):

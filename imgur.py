@@ -16,14 +16,22 @@ def get_link(image):
     payload={'image': image_data}
     files=[]
     headers = {
-    'Authorization': config.imgurID() 
+    'Authorization': os.getenv("imgurID")
     }
 
     response = requests.request("POST", url, headers=headers, data=payload, files=files)
 
-    # print(response.text)
-    link = response.text[437:471]
-    return link
+    
+    #the link returned has back slashes for some reason, which discord doesn't like, this loop filters it out
+    unformattedLink = response.text[437:471] 
+    formattedLink = ""
+    for i in range (len(unformattedLink)):
+        if (unformattedLink[i] != '\\'):
+            formattedLink+=unformattedLink[i]
+
+    return formattedLink
+
+
 
 print (get_link('figure.png'))
 
